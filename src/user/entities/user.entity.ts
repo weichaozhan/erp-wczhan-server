@@ -16,7 +16,7 @@ export class User {
   @Column()
   username: string;
   @Column()
-  @Exclude()
+  @Exclude() // 不返回给客户端
   password: string;
   @CreateDateColumn()
   readonly createDate: Date;

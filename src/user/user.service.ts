@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidV4 } from 'uuid';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { GetUserDto } from './dto/get-users.dto';
 
 @Injectable()
 export class UserService {
@@ -17,23 +20,38 @@ export class UserService {
 
     user.username = createUserDto.username;
     user.password = createUserDto.password;
+    user.userId = uuidV4();
 
     return await this.user.save(user);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(query: GetUserDto) {
+    const { page, size } = query;
+
+    const [users, total] = await this.user.findAndCount({
+      skip: (page - 1) * size,
+      take: size,
+    });
+
+    return {
+      users,
+      total,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.user.find({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.user.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await this.user.delete(id);
   }
 }

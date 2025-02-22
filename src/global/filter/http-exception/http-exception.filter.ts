@@ -23,7 +23,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     };
 
     res.status(status);
-    res.send(errorRes);
     res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send(errorRes);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { v4 as uuidV4 } from 'uuid';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { GetUserDto } from './dto/get-users.dto';
+import { isFiledExit } from 'src/global/tools';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,11 @@ export class UserService {
     user.username = createUserDto.username;
     user.password = createUserDto.password;
     user.userId = uuidV4();
+    const isUserEixt = await isFiledExit(this.user, 'username', user.username);
 
+    if (isUserEixt) {
+      throw new HttpException('用户名已占用', 400);
+    }
     return await this.user.save(user);
   }
 

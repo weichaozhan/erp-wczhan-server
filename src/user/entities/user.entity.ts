@@ -1,5 +1,7 @@
-import { Exclude } from 'class-transformer';
+import { hashSync } from 'bcrypt';
+// import { Exclude } from 'class-transformer';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -15,11 +17,19 @@ export class User {
   userId: string;
   @Column()
   username: string;
-  @Column()
-  @Exclude() // 不返回给客户端
+  @Column({
+    select: false, // 不返回给客户端
+  })
+  // @Exclude() // 不返回给客户端
   password: string;
   @CreateDateColumn()
   readonly createDate: Date;
   @UpdateDateColumn()
   readonly updateDate: Date;
+  @BeforeInsert()
+  async hashSync() {
+    if (this.password) {
+      this.password = hashSync(this.password, 10);
+    }
+  }
 }

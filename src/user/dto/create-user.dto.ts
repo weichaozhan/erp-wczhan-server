@@ -4,6 +4,11 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '用户名不能为空' })
   username: string;
 
+  @Matches(/^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$/, {
+    message: '请输入正确的邮箱格式',
+  })
+  email?: string;
+
   @IsNotEmpty({ message: '密码不能为空' })
   @Matches(
     /^(?=.*\d)(?!.*(\d)\1{2})(?!.*(012|123|234|345|456|567|678|789|987|876|765|654|543|432|321|210))(?=.*[a-zA-Z])(?=.*[^\da-zA-Z\s]).{1,}$/,

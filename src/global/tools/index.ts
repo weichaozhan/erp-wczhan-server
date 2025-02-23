@@ -5,10 +5,11 @@ export async function isFiledExit<T>(
   filedName: string,
   val: any | any[],
 ) {
-  const result = await tableRepository.find({
-    where: {
-      [filedName]: val,
-    } as FindOptionsWhere<T>,
-  });
-  return result.length > 0;
+  const result = await tableRepository.findOneBy({
+    [filedName]: val,
+  } as FindOptionsWhere<T>);
+  return !!result;
 }
+
+export const isEmail = (emailStr: string) =>
+  /^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$/.test(emailStr);

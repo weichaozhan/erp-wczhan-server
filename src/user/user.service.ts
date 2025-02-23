@@ -21,6 +21,7 @@ export class UserService {
 
     user.username = createUserDto.username;
     user.password = createUserDto.password;
+    user.email = createUserDto.email;
     user.userId = uuidV4();
     const isUserEixt = await isFiledExit(this.user, 'username', user.username);
 

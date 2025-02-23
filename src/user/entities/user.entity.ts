@@ -13,6 +13,8 @@ import {
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column({ unique: true })
+  email: string;
   @Column()
   userId: string;
   @Column({ unique: true })

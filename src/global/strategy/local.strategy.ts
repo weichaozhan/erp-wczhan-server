@@ -22,8 +22,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
-      .where('user.username=:username', { username })
-      .orWhere('user.email=:username', { email: username })
+      .where('user.username=:username', { username }) // 先验证用户名
+      .orWhere('user.email=:username', { email: username }) // 用户名验证失败，看输入的是不是邮箱
       .getOne();
 
     if (!user) throw new BadRequestException('用户不存在');

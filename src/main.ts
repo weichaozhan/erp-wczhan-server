@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
-      // 过滤 dto 中没有的字段
+      // 验证器将从已验证（返回的）对象中删除不使用任何验证装饰器的属性。
       whitelist: true,
     }),
   );

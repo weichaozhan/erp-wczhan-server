@@ -1,4 +1,6 @@
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { JWT_EXPIRES, JWT_SECRET, JWT_TEMP_EXPIRES } from '../constants';
+import { JwtModuleOptions } from '@nestjs/jwt';
 
 export async function isFiledExit<T>(
   tableRepository: Repository<T>,
@@ -13,3 +15,11 @@ export async function isFiledExit<T>(
 
 export const isEmail = (emailStr: string) =>
   /^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$/.test(emailStr);
+
+type GetJWTOptions = (isTemp?: boolean) => JwtModuleOptions;
+export const getJWTOptions: GetJWTOptions = (isTemp = false) => ({
+  secret: JWT_SECRET,
+  signOptions: {
+    expiresIn: isTemp ? JWT_TEMP_EXPIRES : JWT_EXPIRES,
+  },
+});

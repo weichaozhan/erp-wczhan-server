@@ -1,5 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiResponse } from 'src/types/static';
 import { QueryFailedError } from 'typeorm';
 
 @Catch()
@@ -13,6 +14,6 @@ export class AllExceptionFilter implements ExceptionFilter {
       code: 500,
       message: exception?.message,
       exception,
-    });
+    } as ApiResponse);
   }
 }

@@ -5,6 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiResponse } from 'src/types/static';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -16,7 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const defaultMsg = status >= 500 ? 'Internal server error' : 'Bad request';
     const message = exception.message ? exception.message : defaultMsg;
 
-    const errorRes = {
+    const errorRes: ApiResponse = {
       code: status,
       message,
       content: exception.getResponse(),

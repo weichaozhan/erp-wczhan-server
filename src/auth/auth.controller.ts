@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
@@ -13,5 +13,10 @@ export class AuthController {
   @Post('login')
   login(@Req() req: Request) {
     return this.authService.login(req.user);
+  }
+
+  @Get('captcha')
+  getCaptcha() {
+    return;
   }
 }

@@ -15,12 +15,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     const defaultMsg = status >= 500 ? 'Internal server error' : 'Bad request';
+    const expRes = exception.getResponse();
     const message = exception.message ? exception.message : defaultMsg;
+
+    let expResMsg: string = '';
+    if (typeof expRes === 'string') {
+      expResMsg = expRes;
+    } else if (Object.prototype.toString.call(expRes) === '[object Object]') {
+      expResMsg = (expRes as any)?.message?.toString();
+    }
 
     const errorRes: ApiResponse = {
       code: status,
-      message,
-      content: exception.getResponse(),
+      message: expResMsg || message,
+      content: expRes,
     };
 
     res.status(status);

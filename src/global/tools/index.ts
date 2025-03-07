@@ -23,3 +23,5 @@ export const getJWTOptions: GetJWTOptions = (isTemp = false) => ({
     expiresIn: isTemp ? JWT_TEMP_EXPIRES : JWT_EXPIRES,
   },
 });
+
+export const getCaptchaKey = (sessionId: string) => `${sessionId}_captcha_key`;

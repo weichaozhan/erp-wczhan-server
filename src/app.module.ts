@@ -7,6 +7,8 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './global/guard/jwt-auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CaptchaModule } from './captcha/captcha.module';
+
 import envConfig from './envConfig';
 
 @Module({
@@ -33,6 +35,7 @@ import envConfig from './envConfig';
       }),
     }),
     AuthModule,
+    CaptchaModule,
   ],
   controllers: [AppController],
   providers: [

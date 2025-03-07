@@ -1,17 +1,11 @@
 import { IsNotEmpty, Matches } from 'class-validator';
 
-export class CreateUserDto {
+export class LoginAuthDto {
   @IsNotEmpty({ message: '用户名不能为空' })
   @Matches(/^(\d|\w|_|[\u4e00-\u9fa5])+$/, {
     message: '用户名只允许字母数字下划线及汉字组成',
   })
   username: string;
-
-  @IsNotEmpty({ message: '邮箱为空' })
-  @Matches(/^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$/, {
-    message: '请输入正确的邮箱格式',
-  })
-  email: string;
 
   @IsNotEmpty({ message: '密码不能为空' })
   @Matches(
@@ -22,4 +16,7 @@ export class CreateUserDto {
     },
   )
   password: string;
+
+  @IsNotEmpty({ message: '验证码不能为空' })
+  code: string;
 }

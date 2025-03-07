@@ -27,8 +27,14 @@ export class UserService {
 
     if (isUserEixt) {
       throw new HttpException('用户名已占用', 400);
+    } else {
+      const isEmailEixt = await isFiledExit(this.user, 'email', user.email);
+      console.log('isEmailEixt', isEmailEixt);
+      if (isEmailEixt) {
+        throw new HttpException('邮箱已占用', 400);
+      }
+      return await this.user.save(user);
     }
-    return await this.user.save(user);
   }
 
   async findAll(query: GetUserDto) {

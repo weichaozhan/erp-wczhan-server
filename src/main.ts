@@ -1,9 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './global/interceptor/transform/transform.interceptor';
 import { HttpExceptionFilter } from './global/filter/http-exception/http-exception.filter';
 import { AllExceptionFilter } from './global/filter/all-exception/all-exception.filter';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,7 +15,15 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.useGlobalInterceptors(new TransformInterceptor());
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      cookie: {
+        httpOnly: true,
+      },
+    }),
+  );
+  app.useGlobalInterceptors(new TransformInterceptor(new Reflector()));
   app.useGlobalFilters(new AllExceptionFilter(), new HttpExceptionFilter());
   await app.listen(process.env.PORT ?? 3001);
 }

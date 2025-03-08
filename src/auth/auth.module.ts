@@ -6,13 +6,14 @@ import { User } from 'src/user/entities/user.entity';
 import { LocalStrategy } from 'src/global/strategy/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { getJWTOptions } from 'src/global/tools';
+import { CaptchaGuard } from 'src/global/guard/captcha.guard';
 
 const jwtModule = JwtModule.register(getJWTOptions());
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), jwtModule],
   controllers: [AuthController],
-  providers: [LocalStrategy, AuthService],
+  providers: [CaptchaGuard, LocalStrategy, AuthService],
   exports: [jwtModule],
 })
 export class AuthModule {}

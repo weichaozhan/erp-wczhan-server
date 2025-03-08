@@ -5,10 +5,14 @@ import { TransformInterceptor } from './global/interceptor/transform/transform.i
 import { HttpExceptionFilter } from './global/filter/http-exception/http-exception.filter';
 import { AllExceptionFilter } from './global/filter/all-exception/all-exception.filter';
 import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       // 验证器将从已验证（返回的）对象中删除不使用任何验证装饰器的属性。
@@ -16,6 +20,7 @@ async function bootstrap() {
     }),
   );
   app.use(
+    cookieParser(),
     session({
       secret: process.env.SESSION_SECRET,
       cookie: {

@@ -13,13 +13,19 @@ export class CaptchaGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request: Request = context.switchToHttp().getRequest();
 
-    const { sessionID, body } = request;
-    const { code } = body;
+    const { sessionID, body, path, method } = request;
+    const { code, email } = body;
     console.log('session', sessionID, code);
 
-    const captchaKey = getCaptchaKey(sessionID);
+    const isCreateUser = path === '/user' && method.toLowerCase() === 'post';
 
-    console.log('redisKey: ', captchaKey, 'code: ', code);
+    if (isCreateUser && !email) {
+      throw new BadRequestException('请输入邮箱');
+    }
+
+    const captchaKey = getCaptchaKey(isCreateUser ? `${email}` : sessionID);
+
+    console.log('redisKey: ', captchaKey, 'code: ', code, 'path', path);
 
     if (!code) {
       throw new BadRequestException('请输入验证码');

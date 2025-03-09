@@ -24,4 +24,4 @@ export const getJWTOptions: GetJWTOptions = (isTemp = false) => ({
   },
 });
 
-export const getCaptchaKey = (sessionId: string) => `${sessionId}_captcha_key`;
+export const getCaptchaKey = (id: string) => `${id}_captcha_key`;

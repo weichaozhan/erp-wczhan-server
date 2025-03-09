@@ -38,8 +38,8 @@ export class EmailTool {
       html,
     };
 
-    await new Promise((resolve, reject) => {
-      this.server.sendMail(options, (error, info) => {
+    return await new Promise((resolve, reject) => {
+      this.server.sendMail(options, (error) => {
         if (error) {
           reject({
             error,
@@ -47,8 +47,7 @@ export class EmailTool {
           });
         } else {
           resolve({
-            info,
-            message: '邮件发送成功',
+            message: '邮件已发送',
           });
         }
       });

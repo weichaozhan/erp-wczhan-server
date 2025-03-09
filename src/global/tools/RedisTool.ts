@@ -1,4 +1,5 @@
 import Ioredis from 'ioredis';
+import { REDIS_EXP_TIME_MAP } from '../constants';
 
 export class Redis {
   private redisCache: Ioredis;
@@ -31,5 +32,20 @@ export class Redis {
 
   async del(key: string) {
     return await this.redisCache.del(key);
+  }
+
+  async getTimeLeftToExpire(key: string) {
+    const time = await this.redisCache.expiretime(key);
+
+    const now = Math.floor(Date.now() / 1000);
+
+    if (
+      time !== REDIS_EXP_TIME_MAP.FOREVER_EXIST &&
+      time !== REDIS_EXP_TIME_MAP.NO_SUCH_KEY
+    ) {
+      return time - now;
+    }
+
+    return time;
   }
 }

@@ -33,15 +33,21 @@ export class CaptchaGuard implements CanActivate {
 
     const redis = new Redis();
     const codeInSession = await redis.get(captchaKey);
-    console.log('codeInSession:', codeInSession);
+    console.log('codeInSession:', codeInSession, 'left');
 
     // delete code from redis after used.
     await redis.del(captchaKey);
 
     if (codeInSession !== code) {
-      throw new BadRequestException('验证码验证失败，请刷新验证码重试');
+      if (isCreateUser) {
+        throw new BadRequestException(`验证码验证失败！`);
+      } else {
+        await redis.del(captchaKey);
+        throw new BadRequestException(`验证码验证失败，请刷新验证码重试`);
+      }
     }
 
+    await redis.del(captchaKey);
     return true;
   }
 }

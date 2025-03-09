@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { IgnoreTrans, Public } from 'src/global/decorator/public.decorator';
 import { CaptchaService } from './captcha.service';
 import { Request } from 'express';
@@ -15,5 +15,14 @@ export class CaptchaController {
     req: Request,
   ) {
     return this.capthaServive.getCaptcha(req.session.id);
+  }
+
+  @Public()
+  @Post('/email')
+  async getMailCaptcha(
+    @Body()
+    body,
+  ) {
+    return await this.capthaServive.getMailCaptcha(body.email);
   }
 }

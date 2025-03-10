@@ -34,7 +34,7 @@ export class CaptchaService {
   }
 
   getCaptcha(sessionId: string) {
-    return this.setCaptcha(sessionId);
+    return this.setCaptcha(sessionId).data;
   }
 
   async getMailCaptcha(email: string) {

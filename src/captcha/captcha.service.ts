@@ -1,15 +1,21 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { REDIS_EXP_TIME_MAP } from 'src/global/constants';
-import { getCaptchaKey } from 'src/global/tools';
+import { getCaptchaKey, isFiledExit } from 'src/global/tools';
 import { EmailTool } from 'src/global/tools/EmailTool';
 import { Redis } from 'src/global/tools/RedisTool';
+import { User } from 'src/user/entities/user.entity';
 import * as svgCaptcha from 'svg-captcha';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CaptchaService {
   private redis: Redis;
 
-  constructor() {
+  constructor(
+    @InjectRepository(User)
+    private readonly user: Repository<User>,
+  ) {
     this.redis = new Redis();
   }
 
@@ -41,6 +47,12 @@ export class CaptchaService {
     console.log('email', email);
     if (!email) {
       throw new BadRequestException(`请输入邮箱！`);
+    }
+
+    const isEmailEixt = await isFiledExit(this.user, 'email', email);
+    console.log('isEmailEixt', isEmailEixt);
+    if (isEmailEixt) {
+      throw new HttpException('邮箱已占用', 400);
     }
 
     const { NO_SUCH_KEY, FOREVER_EXIST } = REDIS_EXP_TIME_MAP;

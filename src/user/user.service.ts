@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { GetUserDto } from './dto/get-users.dto';
-import { isFiledExit } from 'src/global/tools';
+import { isFiledExit } from '../global/tools';
 
 @Injectable()
 export class UserService {

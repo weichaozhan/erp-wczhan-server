@@ -1,10 +1,10 @@
 import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { REDIS_EXP_TIME_MAP } from 'src/global/constants';
-import { getCaptchaKey, isFiledExit } from 'src/global/tools';
-import { EmailTool } from 'src/global/tools/EmailTool';
-import { Redis } from 'src/global/tools/RedisTool';
-import { User } from 'src/user/entities/user.entity';
+import { REDIS_EXP_TIME_MAP } from '../global/constants';
+import { getCaptchaKey, isFiledExit } from '../global/tools';
+import { EmailTool } from '../global/tools/EmailTool';
+import { Redis } from '../global/tools/RedisTool';
+import { User } from '../user/entities/user.entity';
 import * as svgCaptcha from 'svg-captcha';
 import { Repository } from 'typeorm';
 

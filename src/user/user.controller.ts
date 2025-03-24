@@ -13,8 +13,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserDto } from './dto/get-users.dto';
-import { Public } from 'src/global/decorator/public.decorator';
-import { CaptchaGuard } from 'src/global/guard/captcha.guard';
+import { Public } from '../global/decorator/public.decorator';
+import { CaptchaGuard } from '../global/guard/captcha.guard';
 
 @Controller('user')
 export class UserController {

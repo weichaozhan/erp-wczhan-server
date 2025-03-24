@@ -21,7 +21,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts, js}": "npm run lint"
+    "*.{ts, js}": "npm run lint --write"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",

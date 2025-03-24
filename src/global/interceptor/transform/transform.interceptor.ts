@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable, map } from 'rxjs';
-import { IS_IGNORE_TRANS } from 'src/global/decorator/public.decorator';
+import { IS_IGNORE_TRANS } from '../../../global/decorator/public.decorator';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {

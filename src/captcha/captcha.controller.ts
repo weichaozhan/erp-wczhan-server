@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { IgnoreTrans, Public } from 'src/global/decorator/public.decorator';
+import { IgnoreTrans, Public } from '../global/decorator/public.decorator';
 import { CaptchaService } from './captcha.service';
 import { Request } from 'express';
 

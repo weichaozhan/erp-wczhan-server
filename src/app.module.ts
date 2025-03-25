@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './global/guard/jwt-auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CaptchaModule } from './captcha/captcha.module';
+import { RoleModule } from './role/role.module';
+import { SysmoduleModule } from './sysmodule/sysmodule.module';
+import { PermissionModule } from './permission/permission.module';
 
 import envConfig from './envConfig';
 
@@ -36,6 +39,9 @@ import envConfig from './envConfig';
     }),
     AuthModule,
     CaptchaModule,
+    RoleModule,
+    SysmoduleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [

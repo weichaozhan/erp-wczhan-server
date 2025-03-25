@@ -19,6 +19,9 @@ export class Permission {
   name: string;
 
   @Column()
+  nameDesc: string;
+
+  @Column()
   description: string;
 
   @CreateDateColumn()

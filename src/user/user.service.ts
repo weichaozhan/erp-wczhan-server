@@ -14,7 +14,37 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly user: Repository<User>,
-  ) {}
+  ) {
+    this.createFirstUsr();
+  }
+
+  private async createFirstUsr() {
+    this.user
+      .findBy?.({
+        id: 1,
+      })
+      .then((res) => {
+        console.log('UserService res', res);
+
+        if (res.length) {
+          return;
+        }
+
+        const firstUser = new User();
+
+        const { ADMIN_USER, ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
+
+        firstUser.username = ADMIN_USER || 'admin';
+        firstUser.password = ADMIN_PASSWORD || '123456';
+        firstUser.email = ADMIN_EMAIL || 'admin_email';
+        firstUser.userId = uuidV4();
+
+        this.user.save(firstUser);
+      })
+      .catch((err) => {
+        console.log('UserService err', err);
+      });
+  }
 
   async create(createUserDto: CreateUserDto) {
     const user = new User();

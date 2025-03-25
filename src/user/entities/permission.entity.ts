@@ -1,10 +1,16 @@
+/**
+ * @description: This file contains the entity class for the permission table.
+ */
+
 import {
   Column,
   CreateDateColumn,
+  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity()
 export class Permission {
   @PrimaryGeneratedColumn()
   id: number;

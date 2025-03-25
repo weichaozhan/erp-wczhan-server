@@ -1,5 +1,5 @@
 /**
- * @description: system role entity
+ * @description: system module entity
  */
 
 import {
@@ -13,19 +13,41 @@ import {
 } from 'typeorm';
 import { Permission } from './permission.entity';
 import {
-  KEY_REL_ROLE,
+  KEY_REL_PER,
   KEY_REL_SYSM,
-  REL_ROLE_SYSM,
+  REL_SYSM_PER,
 } from '../../global/constants/entity';
-import { SysModule } from './sysmodule.entity';
 
 @Entity()
-export class Role {
+export class SysModule {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
+
+  @Column({ nullable: true })
+  parentID: number;
+
+  @Column({ length: 10 })
+  type: string;
+
+  @Column({
+    length: 50,
+    nullable: true,
+  })
+  icon: string;
+
+  @Column({
+    length: 50,
+  })
+  path: string;
+
+  @Column({
+    length: 50,
+    nullable: true,
+  })
+  createBy: string;
 
   @Column()
   description: string;
@@ -36,15 +58,15 @@ export class Role {
   @UpdateDateColumn()
   updateTime: Date;
 
-  @ManyToMany(() => SysModule)
+  @ManyToMany(() => Permission)
   @JoinTable({
-    name: REL_ROLE_SYSM,
+    name: REL_SYSM_PER,
     joinColumn: {
-      name: KEY_REL_ROLE,
+      name: KEY_REL_SYSM,
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: KEY_REL_SYSM,
+      name: KEY_REL_PER,
       referencedColumnName: 'id',
     },
   })

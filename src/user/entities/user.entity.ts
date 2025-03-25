@@ -5,9 +5,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from './role.entity';
+import {
+  KEY_REL_ROLE,
+  KEY_REL_USER,
+  REL_USER_ROLE,
+} from '../../global/constants/entity';
 
 @Entity()
 export class User {
@@ -34,4 +42,18 @@ export class User {
       this.password = hashSync(this.password, 10);
     }
   }
+
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: REL_USER_ROLE,
+    joinColumn: {
+      name: KEY_REL_USER,
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: KEY_REL_ROLE,
+      referencedColumnName: 'id',
+    },
+  })
+  roles: Role[];
 }

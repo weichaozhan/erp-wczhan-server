@@ -8,7 +8,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { getJWTOptions } from '../global/tools';
 import { CaptchaGuard } from '../global/guard/captcha.guard';
 
-const jwtModule = JwtModule.register(getJWTOptions());
+const jwtModule = JwtModule.register(
+  getJWTOptions(process.env.NODE_ENV === 'development'),
+);
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), jwtModule],

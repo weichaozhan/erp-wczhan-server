@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from './role.entity';
+import { Role } from '../../role/entities/role.entity';
 import {
   KEY_REL_ROLE,
   KEY_REL_USER,

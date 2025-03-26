@@ -21,6 +21,9 @@ export class Permission {
   @Column()
   nameDesc: string;
 
+  @Column({ nullable: true })
+  parentID: number;
+
   @Column()
   description: string;
 

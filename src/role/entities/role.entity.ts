@@ -11,13 +11,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Permission } from './permission.entity';
+import { Permission } from '../../permission/entities/permission.entity';
 import {
   KEY_REL_ROLE,
   KEY_REL_SYSM,
   REL_ROLE_SYSM,
 } from '../../global/constants/entity';
-import { SysModule } from './sysmodule.entity';
+import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
 
 @Entity()
 export class Role {

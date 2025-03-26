@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Permission } from './permission.entity';
+import { Permission } from '../../permission/entities/permission.entity';
 import {
   KEY_REL_PER,
   KEY_REL_SYSM,

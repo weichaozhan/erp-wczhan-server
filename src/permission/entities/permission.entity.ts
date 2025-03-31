@@ -5,11 +5,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
+import { KEY_REL_SYSM } from '../../global/constants/entity';
 
 @Entity()
 export class Permission {
@@ -35,5 +37,6 @@ export class Permission {
   updateTime: Date;
 
   @ManyToOne(() => SysModule, (sysModule) => sysModule.permissions)
+  @JoinColumn({ name: KEY_REL_SYSM })
   sysModule: SysModule;
 }

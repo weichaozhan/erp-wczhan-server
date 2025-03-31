@@ -11,7 +11,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Permission } from '../../permission/entities/permission.entity';
 import {
   KEY_REL_ROLE,
   KEY_REL_SYSM,
@@ -48,5 +47,5 @@ export class Role {
       referencedColumnName: 'id',
     },
   })
-  permissions: Permission[];
+  sysModules: SysModule[];
 }

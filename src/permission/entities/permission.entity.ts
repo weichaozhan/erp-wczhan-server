@@ -1,14 +1,15 @@
 /**
  * @description: This file contains the entity class for the permission table.
  */
-
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
 
 @Entity()
 export class Permission {
@@ -32,4 +33,7 @@ export class Permission {
 
   @UpdateDateColumn()
   updateTime: Date;
+
+  @ManyToOne(() => SysModule, (sysModule) => sysModule.permissions)
+  sysModule: SysModule;
 }

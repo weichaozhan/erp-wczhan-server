@@ -1,22 +1,15 @@
 /**
  * @description: system module entity
  */
-
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Permission } from '../../permission/entities/permission.entity';
-import {
-  KEY_REL_PER,
-  KEY_REL_SYSM,
-  REL_SYSM_PER,
-} from '../../global/constants/entity';
 
 @Entity()
 export class SysModule {
@@ -58,17 +51,6 @@ export class SysModule {
   @UpdateDateColumn()
   updateTime: Date;
 
-  @ManyToMany(() => Permission)
-  @JoinTable({
-    name: REL_SYSM_PER,
-    joinColumn: {
-      name: KEY_REL_SYSM,
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: KEY_REL_PER,
-      referencedColumnName: 'id',
-    },
-  })
+  @OneToMany(() => Permission, (permission) => permission.sysModule)
   permissions: Permission[];
 }

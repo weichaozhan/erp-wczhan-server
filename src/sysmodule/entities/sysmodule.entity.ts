@@ -19,10 +19,13 @@ export class SysModule {
   @Column()
   name: string;
 
+  @Column()
+  nameToShow: string;
+
   @Column({ nullable: true })
   parentID: number;
 
-  @Column({ length: 10 })
+  @Column({ length: 10, nullable: true })
   type: string;
 
   @Column({
@@ -33,12 +36,12 @@ export class SysModule {
 
   @Column({
     length: 50,
+    nullable: true,
   })
   path: string;
 
   @Column({
     length: 50,
-    nullable: true,
   })
   createBy: string;
 

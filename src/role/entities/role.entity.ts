@@ -27,6 +27,9 @@ export class Role {
   name: string;
 
   @Column()
+  nameToShow: string;
+
+  @Column()
   description: string;
 
   @CreateDateColumn()

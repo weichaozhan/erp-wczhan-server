@@ -8,42 +8,65 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { GetUserDto } from './dto/get-users.dto';
 import { isFiledExit } from '../global/tools';
+import { Role } from '../role/entities/role.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly user: Repository<User>,
+    @InjectRepository(Role)
+    private readonly role: Repository<Role>,
   ) {
     this.createFirstUsr();
   }
 
+  private async createAdminRole() {
+    try {
+      const res = await this.role.findBy?.({ id: 1 });
+
+      if (res?.length) {
+        return;
+      }
+
+      const admin = new Role();
+
+      admin.name = 'admin';
+      admin.description = '超级管理员';
+      admin.nameToShow = '超级管理员';
+
+      await this.role?.save?.(admin);
+    } catch (err) {
+      console.log('SysModule err', err);
+    }
+  }
+
   private async createFirstUsr() {
-    this.user
-      .findBy?.({
-        id: 1,
-      })
-      .then((res) => {
-        console.log('UserService res', res);
+    try {
+      await this.createAdminRole();
 
-        if (res.length) {
-          return;
-        }
+      const role = await this.role?.findBy?.({ id: 1 });
 
-        const firstUser = new User();
+      const res = await this.user.findBy?.({ id: 1 });
 
-        const { ADMIN_USER, ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
+      if (res?.length) {
+        return;
+      }
 
-        firstUser.username = ADMIN_USER || 'admin';
-        firstUser.password = ADMIN_PASSWORD || '123456';
-        firstUser.email = ADMIN_EMAIL || 'admin_email';
-        firstUser.userId = uuidV4();
+      const firstUser = new User();
 
-        this.user.save(firstUser);
-      })
-      .catch((err) => {
-        console.log('UserService err', err);
-      });
+      const { ADMIN_USER, ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
+
+      firstUser.username = ADMIN_USER || 'admin';
+      firstUser.password = ADMIN_PASSWORD || '123456';
+      firstUser.email = ADMIN_EMAIL || 'admin_email';
+      firstUser.userId = uuidV4();
+      firstUser.roles = role;
+
+      this.user?.save?.(firstUser);
+    } catch (err) {
+      console.log('UserService err', err);
+    }
   }
 
   async create(createUserDto: CreateUserDto) {

@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '../role/entities/role.entity';
 
 describe('UserService', () => {
   let service: UserService;
@@ -13,6 +14,10 @@ describe('UserService', () => {
         UserService,
         {
           provide: getRepositoryToken(User),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(Role),
           useValue: {},
         },
         JwtService,

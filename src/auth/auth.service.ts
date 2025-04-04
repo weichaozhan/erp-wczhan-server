@@ -3,7 +3,6 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { LoginAuthDto } from './dto/login-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,12 +12,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(user: Partial<User> & LoginAuthDto) {
+  async login(user: Partial<User>) {
+    console.log('user', user);
     const payload: Partial<User> = {
       username: user.username,
       userId: user.userId,
       id: user.id,
       email: user.email,
+      roles: user.roles,
     };
     const accessToken = this.jwtService.sign(payload);
 

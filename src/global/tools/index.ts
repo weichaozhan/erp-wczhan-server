@@ -1,6 +1,7 @@
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { JWT_EXPIRES, JWT_SECRET, JWT_TEMP_EXPIRES } from '../constants';
+import { JWT_EXPIRES, JWT_TEMP_EXPIRES } from '../constants';
 import { JwtModuleOptions } from '@nestjs/jwt';
+import { JWT_SECRET } from '../../../secret';
 
 export async function isFiledExit<T>(
   tableRepository: Repository<T>,

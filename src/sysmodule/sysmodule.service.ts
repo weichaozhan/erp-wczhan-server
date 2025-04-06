@@ -5,8 +5,8 @@ import { In, Repository } from 'typeorm';
 import { SysModule } from './entities/sysmodule.entity';
 import { CreateSysModuleDto } from './dto/create-sysmodule.dto';
 import {
-  MENU_MODULE,
-  MENU_MODULE_ID,
+  AUTH_MODULE,
+  AUTH_MODULE_ID,
   ROOT_MODULE,
   ROOT_MODULE_ID,
 } from '../global/constants/entity';
@@ -23,7 +23,7 @@ export class SysmoduleService {
   private async createSysModule() {
     this.sysModule
       .findBy?.({
-        id: In([ROOT_MODULE_ID, MENU_MODULE_ID]),
+        id: In([ROOT_MODULE_ID, AUTH_MODULE_ID]),
       })
       .then((res) => {
         const ids = res.map((item) => item.id);
@@ -37,8 +37,8 @@ export class SysmoduleService {
         if (!ids.includes(ROOT_MODULE_ID)) {
           modules.push(new SysModule(ROOT_MODULE));
         }
-        if (!ids.includes(MENU_MODULE_ID)) {
-          modules.push(new SysModule(MENU_MODULE));
+        if (!ids.includes(AUTH_MODULE_ID)) {
+          modules.push(new SysModule(AUTH_MODULE));
         }
 
         this.sysModule.save(modules);
@@ -48,8 +48,8 @@ export class SysmoduleService {
       });
   }
 
-  create(createSysModuleDto: CreateSysModuleDto) {
+  async create(createSysModuleDto: CreateSysModuleDto) {
     console.log('createSysModuleDto', createSysModuleDto);
-    return 'This action adds a new sysmodule';
+    return await this.sysModule.save(new SysModule(createSysModuleDto));
   }
 }

@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { GetUserDto } from './dto/get-users.dto';
 import { isFiledExit } from '../global/tools';
 import { Role } from '../role/entities/role.entity';
+import { ROLE_ADMIN_ID, USER_FIRST_ID } from '../global/constants/entity';
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,7 @@ export class UserService {
 
   private async createAdminRole() {
     try {
-      const res = await this.role.findBy?.({ id: 1 });
+      const res = await this.role.findBy?.({ id: ROLE_ADMIN_ID });
 
       if (res?.length) {
         return;
@@ -45,9 +46,9 @@ export class UserService {
     try {
       await this.createAdminRole();
 
-      const role = await this.role?.findBy?.({ id: 1 });
+      const role = await this.role?.findBy?.({ id: ROLE_ADMIN_ID });
 
-      const res = await this.user.findBy?.({ id: 1 });
+      const res = await this.user.findBy?.({ id: USER_FIRST_ID });
 
       if (res?.length) {
         return;

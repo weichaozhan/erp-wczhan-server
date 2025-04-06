@@ -13,6 +13,9 @@ import { SysmoduleModule } from './sysmodule/sysmodule.module';
 import { PermissionModule } from './permission/permission.module';
 
 import envConfig from './envConfig';
+import { SysModule } from './sysmodule/entities/sysmodule.entity';
+import { Role } from './role/entities/role.entity';
+import { Permission } from './permission/entities/permission.entity';
 
 @Module({
   imports: [
@@ -37,6 +40,7 @@ import envConfig from './envConfig';
         autoLoadEntities: true,
       }),
     }),
+    TypeOrmModule.forFeature([Role, SysModule, Permission]),
     AuthModule,
     CaptchaModule,
     RoleModule,

@@ -7,6 +7,10 @@ export const KEY_REL_USER = 'userId';
 export const KEY_REL_ROLE = 'roleId';
 export const KEY_REL_SYSM = 'sysmoduleId';
 
+export const USER_FIRST_ID = 1;
+
+export const ROLE_ADMIN_ID = 1;
+
 export const ROOT_MODULE = {
   name: 'rootModule',
   nameToShow: '根模块',
@@ -14,13 +18,13 @@ export const ROOT_MODULE = {
   createBy: SYS_CREATER,
   isMenu: false,
 };
-export const MENU_MODULE = {
-  name: 'menuManage',
-  nameToShow: '菜单管理',
-  description: '菜单管理，菜单增删改查',
+export const AUTH_MODULE = {
+  name: 'authManage',
+  nameToShow: '权限管理',
+  description: '权限管理，权限增删改查',
   createBy: 'system',
   isMenu: true,
 };
 
 export const ROOT_MODULE_ID = 1;
-export const MENU_MODULE_ID = 2;
+export const AUTH_MODULE_ID = 2;

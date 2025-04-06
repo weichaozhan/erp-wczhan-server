@@ -8,3 +8,10 @@ export interface ApiResponse {
   data?: any;
   [key: string]: any;
 }
+
+interface PayloadAuth {
+  roles: number[];
+  permissions: number[];
+}
+
+export type JWTPayload = Omit<Partial<User>, 'roles'> & PayloadAuth;

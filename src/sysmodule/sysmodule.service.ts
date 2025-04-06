@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSysModuleDto } from './dto/create-sysmodule.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
+
 import { SysModule } from './entities/sysmodule.entity';
-import { Repository } from 'typeorm';
+import { CreateSysModuleDto } from './dto/create-sysmodule.dto';
+import {
+  MENU_MODULE,
+  MENU_MODULE_ID,
+  ROOT_MODULE,
+  ROOT_MODULE_ID,
+} from '../global/constants/entity';
 
 @Injectable()
 export class SysmoduleService {
@@ -16,24 +23,25 @@ export class SysmoduleService {
   private async createSysModule() {
     this.sysModule
       .findBy?.({
-        id: 1,
+        id: In([ROOT_MODULE_ID, MENU_MODULE_ID]),
       })
       .then((res) => {
-        console.log('SysModule res', res);
+        const ids = res.map((item) => item.id);
 
-        if (res.length) {
+        if (ids.length >= 2) {
           return;
         }
 
-        const firstModule = new SysModule();
+        const modules: SysModule[] = [];
 
-        firstModule.name = 'rootModule';
-        firstModule.nameToShow = '根模块';
-        firstModule.description =
-          '根模块，不属于任何菜单的权限均可放在该模块下';
-        firstModule.createBy = 'system';
+        if (!ids.includes(ROOT_MODULE_ID)) {
+          modules.push(new SysModule(ROOT_MODULE));
+        }
+        if (!ids.includes(MENU_MODULE_ID)) {
+          modules.push(new SysModule(MENU_MODULE));
+        }
 
-        this.sysModule.save(firstModule);
+        this.sysModule.save(modules);
       })
       .catch((err) => {
         console.log('SysModule err', err);

@@ -46,6 +46,9 @@ export class SysModule {
   createBy: string;
 
   @Column()
+  isMenu: boolean;
+
+  @Column()
   description: string;
 
   @CreateDateColumn()
@@ -56,4 +59,8 @@ export class SysModule {
 
   @OneToMany(() => Permission, (permission) => permission.sysModule)
   permissions: Permission[];
+
+  constructor(init: Partial<SysModule>) {
+    Object.assign(this, init);
+  }
 }

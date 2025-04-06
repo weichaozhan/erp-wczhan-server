@@ -10,6 +10,9 @@ export class CreateSysModuleDto {
   @IsNotEmpty({ message: '模块展示名称不能为空' })
   nameToShow: string;
 
+  @IsNotEmpty({ message: '模块是否为菜单不能为空' })
+  isMenu: boolean;
+
   @IsOptional()
   parentID?: number;
 

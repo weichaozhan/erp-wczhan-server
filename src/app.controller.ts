@@ -11,4 +11,10 @@ export class AppController {
     const user = req.user;
     return await this.appService.getSystemModules(user);
   }
+
+  @Get('menus')
+  async getUserMenus(@Req() req: Request) {
+    const user = req.user;
+    return await this.appService.getUserMenus(user);
+  }
 }

@@ -15,3 +15,5 @@ interface PayloadAuth {
 }
 
 export type JWTPayload = Omit<Partial<User>, 'roles'> & PayloadAuth;
+
+export type MenuListNode = SysModule & { children?: MenuListNode[] };

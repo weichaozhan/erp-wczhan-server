@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './role/entities/role.entity';
 import { Permission } from './permission/entities/permission.entity';
 import { ROOT_MODULE_ID } from './global/constants/entity';
+import { MenuListNode } from './types/static';
 
 @Injectable()
 export class AppService {
@@ -28,5 +29,39 @@ export class AppService {
     }
 
     return modules;
+  }
+
+  converToTree(menuList: MenuListNode[]) {
+    const map = new Map<number, MenuListNode>();
+    const tree: MenuListNode[] = [];
+
+    menuList.forEach((item) => {
+      map.set(item.id, item);
+      item.children = [];
+    });
+    menuList.forEach((item) => {
+      if (!item.parentId) {
+        tree.push(item);
+      } else {
+        const parent = map.get(item.parentId);
+        if (parent) {
+          parent.children.push(item);
+        }
+      }
+    });
+    return tree;
+  }
+
+  async getUserMenus(user) {
+    let menus: SysModule[] = [];
+    // admin role user return all menus
+    if (user?.roles?.includes?.(ROOT_MODULE_ID)) {
+      menus = await this.sysModule.find({
+        where: { isMenu: true },
+        relations: ['permissions'],
+      });
+    }
+
+    return this.converToTree(menus);
   }
 }

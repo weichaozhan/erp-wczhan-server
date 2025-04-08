@@ -2,8 +2,8 @@ import { IsNotEmpty, IsNumber, IsOptional, Matches } from 'class-validator';
 
 export class CreatePermissionDto {
   @IsNotEmpty({ message: '权限名不能为空' })
-  @Matches(/^(\d|\w|_|[\u4e00-\u9fa5])+$/, {
-    message: '权限名只允许字母数字下划线及汉字组成',
+  @Matches(/^(\d|\w|_)+$/, {
+    message: '权限名只允许字母数字下划线组成',
   })
   name: string;
 

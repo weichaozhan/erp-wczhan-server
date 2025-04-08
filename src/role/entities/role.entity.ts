@@ -26,7 +26,7 @@ export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -36,10 +36,16 @@ export class Role {
   description: string;
 
   @CreateDateColumn()
-  createTime: Date;
+  readonly createTime: Date;
 
   @UpdateDateColumn()
-  updateTime: Date;
+  readonly updateTime: Date;
+
+  @Column({ nullable: true })
+  createBy: string;
+
+  @Column({ nullable: true })
+  creatorId: number;
 
   @ManyToMany(() => SysModule)
   @JoinTable({

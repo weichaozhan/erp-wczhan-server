@@ -1,4 +1,4 @@
-import { SysModule } from 'src/sysmodule/entities/sysmodule.entity';
+import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
 import { SYS_CREATER } from './index';
 
 export const REL_ROLE_SYSM = 'role_sysmodule_relation';
@@ -25,7 +25,7 @@ export const AUTH_MODULE: Partial<SysModule> = {
   name: 'authManage',
   nameToShow: '权限管理',
   description: '权限管理，权限增删改查',
-  createBy: 'system',
+  createBy: SYS_CREATER,
   isMenu: true,
   path: '/auth',
 };

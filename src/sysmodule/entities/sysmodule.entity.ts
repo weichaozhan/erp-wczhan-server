@@ -16,7 +16,7 @@ export class SysModule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -45,6 +45,9 @@ export class SysModule {
   })
   createBy: string;
 
+  @Column({ nullable: true })
+  creatorId: number;
+
   @Column()
   isMenu: boolean;
 
@@ -52,15 +55,15 @@ export class SysModule {
   description: string;
 
   @CreateDateColumn()
-  createTime: Date;
+  readonly createTime: Date;
 
   @UpdateDateColumn()
-  updateTime: Date;
+  readonly updateTime: Date;
 
   @OneToMany(() => Permission, (permission) => permission.sysModule)
   permissions: Permission[];
 
-  constructor(init: Partial<SysModule>) {
-    Object.assign(this, init);
+  constructor(init?: Partial<SysModule>) {
+    Object.assign(this, init ?? {});
   }
 }

@@ -21,21 +21,34 @@ import {
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column({ unique: true })
   email: string;
+
   @Column()
   userId: string;
+
   @Column({ unique: true })
   username: string;
+
   @Exclude() // 不返回给客户端
   @Column({
     select: false, // 查询时不从数据库读取该字段
   })
   password: string;
+
   @CreateDateColumn()
   readonly createDate: Date;
+
   @UpdateDateColumn()
   readonly updateDate: Date;
+
+  @Column({ nullable: true })
+  createBy: string;
+
+  @Column({ nullable: true })
+  creatorId: number;
+
   @BeforeInsert()
   async hashSync() {
     if (this.password) {

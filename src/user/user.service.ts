@@ -10,6 +10,7 @@ import { GetUserDto } from './dto/get-users.dto';
 import { isFiledExit } from '../global/tools';
 import { Role } from '../role/entities/role.entity';
 import { ROLE_ADMIN_ID, USER_FIRST_ID } from '../global/constants/entity';
+import { SYS_CREATER } from '../global/constants';
 
 @Injectable()
 export class UserService {
@@ -35,6 +36,7 @@ export class UserService {
       admin.name = 'admin';
       admin.description = '超级管理员';
       admin.nameToShow = '超级管理员';
+      admin.createBy = SYS_CREATER;
 
       await this.role?.save?.(admin);
     } catch (err) {

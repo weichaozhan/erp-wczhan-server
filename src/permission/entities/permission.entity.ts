@@ -18,25 +18,35 @@ export class Permission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
   nameDesc: string;
 
-  @Column({ nullable: true })
+  @Column()
   parentID: number;
 
   @Column()
   description: string;
 
+  @Column({ nullable: true })
+  createBy: string;
+
+  @Column({ nullable: true })
+  creatorId: number;
+
   @CreateDateColumn()
-  createTime: Date;
+  readonly createTime: Date;
 
   @UpdateDateColumn()
-  updateTime: Date;
+  readonly updateTime: Date;
 
   @ManyToOne(() => SysModule, (sysModule) => sysModule.permissions)
   @JoinColumn({ name: KEY_REL_SYSM })
   sysModule: SysModule;
+
+  constructor(init?: Partial<Permission>) {
+    Object.assign(this, init ?? {});
+  }
 }

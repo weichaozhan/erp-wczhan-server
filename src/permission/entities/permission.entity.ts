@@ -42,7 +42,9 @@ export class Permission {
   @UpdateDateColumn()
   readonly updateTime: Date;
 
-  @ManyToOne(() => SysModule, (sysModule) => sysModule.permissions)
+  @ManyToOne(() => SysModule, (sysModule) => sysModule.permissions, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: KEY_REL_SYSM })
   sysModule: SysModule;
 

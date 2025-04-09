@@ -18,7 +18,7 @@ export class Permission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, update: false })
   name: string;
 
   @Column()
@@ -33,7 +33,7 @@ export class Permission {
   @Column({ nullable: true })
   createBy: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, update: false })
   creatorId: number;
 
   @CreateDateColumn()

@@ -17,14 +17,5 @@ export class CreateSysModuleDto {
   parentID?: number;
 
   @IsOptional()
-  type?: string;
-
-  @IsOptional()
-  icon?: string;
-
-  @IsOptional()
   path?: string;
-
-  @IsOptional()
-  createBy?: string;
 }

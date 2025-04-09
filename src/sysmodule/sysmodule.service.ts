@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
 import { SysModule } from './entities/sysmodule.entity';
+import { User } from '../user/entities/user.entity';
 import { CreateSysModuleDto } from './dto/create-sysmodule.dto';
 import {
   AUTH_MODULE,
@@ -48,8 +49,22 @@ export class SysmoduleService {
       });
   }
 
-  async create(createSysModuleDto: CreateSysModuleDto) {
+  async create(createSysModuleDto: CreateSysModuleDto, user: Partial<User>) {
     console.log('createSysModuleDto', createSysModuleDto);
-    return await this.sysModule.save(new SysModule(createSysModuleDto));
+    return await this.sysModule.save(
+      new SysModule({
+        ...createSysModuleDto,
+        createBy: user.email,
+        creatorId: user.id,
+      }),
+    );
+  }
+
+  async update(id: string, createSysModuleDto: CreateSysModuleDto) {
+    return await this.sysModule.update(id, createSysModuleDto);
+  }
+
+  async remove(id: string) {
+    return await this.sysModule.delete(id);
   }
 }

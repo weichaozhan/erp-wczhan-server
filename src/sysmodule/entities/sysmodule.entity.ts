@@ -16,13 +16,13 @@ export class SysModule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, update: false })
   name: string;
 
   @Column()
   nameToShow: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, update: false })
   parentID: number;
 
   @Column({ length: 10, nullable: true })
@@ -45,13 +45,13 @@ export class SysModule {
   })
   createBy: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, update: false })
   creatorId: number;
 
   @Column()
   isMenu: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @CreateDateColumn()

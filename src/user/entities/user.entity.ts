@@ -46,7 +46,7 @@ export class User {
   @Column({ nullable: true })
   createBy: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, update: false })
   creatorId: number;
 
   @BeforeInsert()

@@ -31,11 +31,11 @@ export class SysmoduleController {
     @Body()
     createSysModuleDto: CreateSysModuleDto,
   ) {
-    return this.sysmoduleService.update(id, createSysModuleDto);
+    return this.sysmoduleService.update(+id, createSysModuleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.sysmoduleService.remove(id);
+    return this.sysmoduleService.remove(+id);
   }
 }

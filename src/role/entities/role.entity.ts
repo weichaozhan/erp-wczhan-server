@@ -32,7 +32,7 @@ export class Role {
   @Column()
   nameToShow: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @CreateDateColumn()
@@ -74,4 +74,8 @@ export class Role {
     },
   })
   permissions: Permission[];
+
+  constructor(init?: Partial<Permission>) {
+    Object.assign(this, init ?? {});
+  }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
@@ -60,11 +60,14 @@ export class SysmoduleService {
     );
   }
 
-  async update(id: string, createSysModuleDto: CreateSysModuleDto) {
+  async update(id: number, createSysModuleDto: CreateSysModuleDto) {
     return await this.sysModule.update(id, createSysModuleDto);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
+    if (ROOT_MODULE_ID === id || AUTH_MODULE_ID === id) {
+      throw new HttpException('系统创建模块不可删除', 400);
+    }
     return await this.sysModule.delete(id);
   }
 }

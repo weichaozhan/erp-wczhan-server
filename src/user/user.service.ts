@@ -6,11 +6,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { GetUserDto } from './dto/get-users.dto';
 import { isFiledExit } from '../global/tools';
 import { Role } from '../role/entities/role.entity';
 import { ROLE_ADMIN_ID, USER_FIRST_ID } from '../global/constants/entity';
 import { SYS_CREATER } from '../global/constants';
+import { PaginationDto } from '../global/global.dto';
 
 @Injectable()
 export class UserService {
@@ -93,7 +93,7 @@ export class UserService {
     }
   }
 
-  async findAll(query: GetUserDto) {
+  async findAll(query: PaginationDto) {
     const { page, size } = query;
 
     const [users, total] = await this.user.findAndCount({
@@ -104,6 +104,8 @@ export class UserService {
     return {
       users,
       total,
+      page,
+      size,
     };
   }
 

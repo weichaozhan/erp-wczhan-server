@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class GetUserDto {
+export class PaginationDto {
   @IsNotEmpty({ message: '页码不能为空且必须为数字' })
   page: number;
 

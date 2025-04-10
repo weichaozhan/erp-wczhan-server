@@ -7,6 +7,7 @@ import { Permission } from '../permission/entities/permission.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { User } from '../user/entities/user.entity';
 import { ROLE_ADMIN_ID } from '../global/constants/entity';
+import { PaginationDto } from '../global/global.dto';
 
 @Injectable()
 export class RoleService {
@@ -16,6 +17,22 @@ export class RoleService {
     @InjectRepository(Permission)
     private readonly permission: Repository<Permission>,
   ) {}
+
+  async findAll(query: PaginationDto) {
+    const { page, size } = query;
+
+    const [roles, total] = await this.role.findAndCount({
+      skip: (page - 1) * size,
+      take: size,
+    });
+
+    return {
+      roles,
+      total,
+      page,
+      size,
+    };
+  }
 
   async create(createRoleDto: CreateRoleDto, user: Partial<User>) {
     return await this.role.save(

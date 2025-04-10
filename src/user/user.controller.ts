@@ -12,9 +12,9 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { GetUserDto } from './dto/get-users.dto';
 import { Public } from '../global/decorator/public.decorator';
 import { CaptchaGuard } from '../global/guard/captcha.guard';
+import { PaginationDto } from '../global/global.dto';
 
 @Controller('user')
 export class UserController {
@@ -28,7 +28,7 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() query: GetUserDto) {
+  findAll(@Query() query: PaginationDto) {
     return this.userService.findAll(query);
   }
 

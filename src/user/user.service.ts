@@ -104,8 +104,8 @@ export class UserService {
     return {
       users,
       total,
-      page,
-      size,
+      page: +page,
+      size: +size,
     };
   }
 

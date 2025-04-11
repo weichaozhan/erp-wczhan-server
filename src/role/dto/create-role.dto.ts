@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsOptional,
-  Matches,
-  ValidateNested,
-} from 'class-validator';
+import { IsInstance, IsNotEmpty, IsOptional, Matches } from 'class-validator';
 
 import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
 import { Permission } from '../../permission/entities/permission.entity';
@@ -23,16 +17,10 @@ export class CreateRoleDto {
   description?: string;
 
   @IsOptional()
-  @IsArray()
-  @ValidateNested({
-    each: true,
-  })
+  @IsInstance(Object, { each: true })
   sysModules: SysModule[];
 
   @IsOptional()
-  @IsArray()
-  @ValidateNested({
-    each: true,
-  })
+  @IsInstance(Object, { each: true })
   permissions: Permission[];
 }

@@ -24,6 +24,7 @@ export class RoleService {
     const [roles, total] = await this.role.findAndCount({
       skip: (page - 1) * size,
       take: size,
+      relations: ['permissions', 'sysModules'],
     });
 
     return {
@@ -35,6 +36,7 @@ export class RoleService {
   }
 
   async create(createRoleDto: CreateRoleDto, user: Partial<User>) {
+    console.log('createRoleDto', createRoleDto);
     return await this.role.save(
       new Role({
         ...createRoleDto,
@@ -45,7 +47,10 @@ export class RoleService {
   }
 
   async update(id: number, updateRoleDto: CreateRoleDto) {
-    return await this.role.update(id, updateRoleDto);
+    return await this.role.save({
+      ...updateRoleDto,
+      id,
+    });
   }
 
   async remove(id: number) {

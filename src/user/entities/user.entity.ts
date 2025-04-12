@@ -37,6 +37,9 @@ export class User {
   })
   password: string;
 
+  @Column({ default: false })
+  frozen: boolean;
+
   @CreateDateColumn()
   readonly createDate: Date;
 

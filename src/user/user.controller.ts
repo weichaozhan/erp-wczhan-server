@@ -20,6 +20,11 @@ import { PaginationDto } from '../global/global.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post('admin')
+  createAdmin(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
+
   @Public()
   @UseGuards(CaptchaGuard)
   @Post()

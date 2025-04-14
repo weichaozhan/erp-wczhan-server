@@ -99,6 +99,7 @@ export class UserService {
     const [users, total] = await this.user.findAndCount({
       skip: (page - 1) * size,
       take: size,
+      relations: ['roles'],
     });
 
     return {
@@ -118,7 +119,10 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.user.update(id, updateUserDto);
+    return await this.user.save({
+      ...updateUserDto,
+      id,
+    });
   }
 
   async remove(id: number) {

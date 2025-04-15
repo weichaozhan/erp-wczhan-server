@@ -7,10 +7,14 @@ import { Role } from './role/entities/role.entity';
 import { Permission } from './permission/entities/permission.entity';
 import { ROOT_MODULE_ID } from './global/constants/entity';
 import { MenuListNode } from './types/static';
+import { User } from './user/entities/user.entity';
+import { getUserModuls } from './global/tools';
 
 @Injectable()
 export class AppService {
   constructor(
+    @InjectRepository(User)
+    private readonly user: Repository<User>,
     @InjectRepository(SysModule)
     private readonly sysModule: Repository<SysModule>,
     @InjectRepository(Permission)
@@ -25,6 +29,12 @@ export class AppService {
     if (user?.roles?.includes?.(ROOT_MODULE_ID)) {
       modules = await this.sysModule.find({
         relations: ['permissions'],
+      });
+    } else {
+      modules = await getUserModuls({
+        userEntity: this.user,
+        moduleEntity: this.sysModule,
+        userId: user.id,
       });
     }
 
@@ -54,11 +64,18 @@ export class AppService {
 
   async getUserMenus(user) {
     let menus: SysModule[] = [];
-    // admin role user return all menus
+
     if (user?.roles?.includes?.(ROOT_MODULE_ID)) {
       menus = await this.sysModule.find({
         where: { isMenu: true },
         relations: ['permissions'],
+      });
+    } else {
+      menus = await getUserModuls({
+        isMenu: true,
+        userEntity: this.user,
+        moduleEntity: this.sysModule,
+        userId: user.id,
       });
     }
 

@@ -5,6 +5,7 @@ import { SysModule } from './sysmodule/entities/sysmodule.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Role } from './role/entities/role.entity';
 import { Permission } from './permission/entities/permission.entity';
+import { User } from './user/entities/user.entity';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -14,6 +15,10 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [
         AppService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {},
+        },
         {
           provide: getRepositoryToken(SysModule),
           useValue: {},

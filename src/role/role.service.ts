@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { Role } from './entities/role.entity';
 import { Permission } from '../permission/entities/permission.entity';
@@ -19,12 +19,20 @@ export class RoleService {
   ) {}
 
   async findAll(query: PaginationDto) {
-    const { page, size } = query;
+    const { page, size, searchKey, searchValue } = query;
+
+    const keyLike =
+      searchKey && searchValue
+        ? {
+            [searchKey]: Like(`%${searchValue}%`),
+          }
+        : undefined;
 
     const [roles, total] = await this.role.findAndCount({
       skip: (page - 1) * size,
       take: size,
       relations: ['permissions', 'sysModules'],
+      where: keyLike,
     });
 
     return {

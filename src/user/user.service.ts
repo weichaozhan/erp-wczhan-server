@@ -5,7 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { isFiledExit } from '../global/tools';
 import { Role } from '../role/entities/role.entity';
 import { ROLE_ADMIN_ID, USER_FIRST_ID } from '../global/constants/entity';
@@ -94,11 +94,19 @@ export class UserService {
   }
 
   async findAll(query: PaginationDto) {
-    const { page, size } = query;
+    const { page, size, searchKey, searchValue } = query;
+
+    const keyLike =
+      searchKey && searchValue
+        ? {
+            [searchKey]: Like(`%${searchValue}%`),
+          }
+        : undefined;
 
     const [users, total] = await this.user.findAndCount({
       skip: (page - 1) * size,
       take: size,
+      where: keyLike,
       relations: ['roles'],
     });
 

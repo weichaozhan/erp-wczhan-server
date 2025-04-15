@@ -74,7 +74,13 @@ const buildRelationModules = (
     }
   });
 
-  return [...modules.values()];
+  const result = [...modules.values()];
+
+  allModuleMap.clear();
+  permMap.clear();
+  modules.clear();
+
+  return result;
 };
 
 interface GetUserModulsParams {

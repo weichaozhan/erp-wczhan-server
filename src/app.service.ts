@@ -59,6 +59,7 @@ export class AppService {
         }
       }
     });
+    map.clear();
     return tree;
   }
 

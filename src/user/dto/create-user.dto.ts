@@ -8,7 +8,7 @@ export class CreateUserDto {
   username: string;
 
   @IsNotEmpty({ message: '邮箱为空' })
-  @Matches(/^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$/, {
+  @Matches(/^\w+[-+.]?\w+@\w+(-.\w+)*.\w+(-.\w+)*$/, {
     message: '请输入正确的邮箱格式',
   })
   email: string;

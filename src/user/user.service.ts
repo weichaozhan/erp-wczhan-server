@@ -127,6 +127,10 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    if (id === USER_FIRST_ID) {
+      throw new HttpException('不允许修改初始用户', 400);
+    }
+
     return await this.user.save({
       ...updateUserDto,
       id,

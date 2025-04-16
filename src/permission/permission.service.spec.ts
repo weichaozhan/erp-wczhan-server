@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PermissionService } from './permission.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+
+import { PermissionService } from './permission.service';
 import { SysModule } from '../sysmodule/entities/sysmodule.entity';
 import { Permission } from './entities/permission.entity';
 import { Role } from '../role/entities/role.entity';
+import { User } from '../user/entities/user.entity';
 
 describe('PermissionService', () => {
   let service: PermissionService;
@@ -12,6 +14,10 @@ describe('PermissionService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PermissionService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {},
+        },
         {
           provide: getRepositoryToken(SysModule),
           useValue: {},

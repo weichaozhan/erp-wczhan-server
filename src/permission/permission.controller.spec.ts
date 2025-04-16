@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+
 import { PermissionController } from './permission.controller';
 import { PermissionService } from './permission.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Permission } from './entities/permission.entity';
 import { SysModule } from '../sysmodule/entities/sysmodule.entity';
 import { Role } from '../role/entities/role.entity';
+import { User } from '../user/entities/user.entity';
 
 describe('PermissionController', () => {
   let controller: PermissionController;
@@ -14,6 +16,10 @@ describe('PermissionController', () => {
       controllers: [PermissionController],
       providers: [
         PermissionService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {},
+        },
         {
           provide: getRepositoryToken(SysModule),
           useValue: {},

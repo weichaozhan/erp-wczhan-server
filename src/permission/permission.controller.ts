@@ -18,7 +18,12 @@ export class PermissionController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.permissionService.remove(+id);
+  remove(
+    @Param('id')
+    id: string,
+    @Req()
+    req: Request,
+  ) {
+    return this.permissionService.remove(+id, req.user);
   }
 }

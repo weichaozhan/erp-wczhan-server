@@ -84,16 +84,44 @@ const buildRelationModules = (
   return result;
 };
 
+const getUserCreateMPs = async (
+  moduleEntity: Repository<SysModule>,
+  permissionEntity: Repository<Permission>,
+  userId: number,
+  leafModulesSet: Set<number>,
+  permMap: Map<number, Permission>,
+) => {
+  const userCreateMdules = await moduleEntity?.find?.({
+    where: {
+      creatorId: userId,
+    },
+  });
+  userCreateMdules?.forEach?.((m) => {
+    leafModulesSet.add(m.id);
+  });
+
+  const userCreateperms = await permissionEntity?.find?.({
+    where: {
+      creatorId: userId,
+    },
+  });
+  userCreateperms?.forEach?.((p) => {
+    permMap.set(p.id, p);
+  });
+};
+
 interface GetUserModulsParams {
   userId: number;
   userEntity: Repository<User>;
   moduleEntity: Repository<SysModule>;
+  permissionEntity?: Repository<Permission>;
   isMenu?: boolean;
 }
 export const getUserModuls = async ({
   userId,
   userEntity,
   moduleEntity,
+  permissionEntity,
   isMenu,
 }: GetUserModulsParams): Promise<SysModule[]> => {
   const mMap = await getAllModulesMap(moduleEntity, isMenu);
@@ -107,6 +135,17 @@ export const getUserModuls = async ({
   const leafModulesSet: Set<number> = new Set();
 
   const permMap: Map<number, Permission> = new Map();
+
+  if (!isMenu) {
+    await getUserCreateMPs(
+      moduleEntity,
+      permissionEntity,
+      userId,
+      leafModulesSet,
+      permMap,
+    );
+  }
+
   roles?.forEach?.((role) => {
     const rolPerm = role.permissions;
     const rolSysModules = role.sysModules;

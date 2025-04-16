@@ -35,6 +35,7 @@ export class AppService {
         userEntity: this.user,
         moduleEntity: this.sysModule,
         userId: user.id,
+        permissionEntity: this.permission,
       });
     }
 

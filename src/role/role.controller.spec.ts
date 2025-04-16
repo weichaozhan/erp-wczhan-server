@@ -5,6 +5,7 @@ import { RoleController } from './role.controller';
 import { RoleService } from './role.service';
 import { Role } from './entities/role.entity';
 import { Permission } from '../permission/entities/permission.entity';
+import { User } from '../user/entities/user.entity';
 
 describe('RoleController', () => {
   let controller: RoleController;
@@ -20,6 +21,10 @@ describe('RoleController', () => {
         },
         {
           provide: getRepositoryToken(Permission),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(User),
           useValue: {},
         },
       ],

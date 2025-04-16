@@ -1,4 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Repository } from 'typeorm';
@@ -13,8 +18,6 @@ export class PermissionGuard implements CanActivate {
   constructor(
     @InjectRepository(User)
     private readonly user: Repository<User>,
-    @InjectRepository(Role)
-    private readonly role: Repository<Role>,
     private reflector: Reflector,
   ) {}
 
@@ -50,6 +53,9 @@ export class PermissionGuard implements CanActivate {
       }
     });
 
-    return permissionKeys.includes(permissionKey);
+    const permissionHas = permissionKeys.includes(permissionKey);
+
+    if (permissionHas) return true;
+    throw new HttpException('没有权限', 403);
   }
 }

@@ -6,6 +6,7 @@ import { User } from '../../user/entities/user.entity';
 import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
 
 import { JWT_EXPIRES, JWT_TEMP_EXPIRES } from '../constants';
+import { ROLE_ADMIN_ID } from '../constants/entity';
 
 export async function isFiledExit<T>(
   tableRepository: Repository<T>,
@@ -143,3 +144,13 @@ export const getJWTOptions: GetJWTOptions = (isTemp = false) => ({
 });
 
 export const getCaptchaKey = (id: string) => `${id}_captcha_key`;
+
+export const isUserAdmin = async (
+  userId: number,
+  userEntity?: Repository<User>,
+) => {
+  const user = await userEntity?.findOne?.({
+    where: { id: userId },
+  });
+  return user?.roles?.some?.((role) => role.id === ROLE_ADMIN_ID);
+};

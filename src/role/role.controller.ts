@@ -20,8 +20,14 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Get()
-  findAll(@Query() query: PaginationDto) {
-    return this.roleService.findAll(query);
+  findAll(
+    @Query()
+    query: PaginationDto,
+    @Req()
+    req: Request,
+  ) {
+    const { user } = req;
+    return this.roleService.findAll(query, user);
   }
 
   @Post()
@@ -41,15 +47,21 @@ export class RoleController {
     id: string,
     @Body()
     body: CreateRoleDto,
+    @Req()
+    req: Request,
   ) {
-    return this.roleService.update(+id, body);
+    const { user } = req;
+    return this.roleService.update(+id, body, user);
   }
 
   @Delete(':id')
   remove(
     @Param('id')
     id: string,
+    @Req()
+    req: Request,
   ) {
-    return this.roleService.remove(+id);
+    const { user } = req;
+    return this.roleService.remove(+id, user);
   }
 }

@@ -11,14 +11,26 @@ import {
   ROOT_MODULE,
   ROOT_MODULE_ID,
 } from '../global/constants/entity';
+import { hasPermToOperateRow } from '../global/tools';
 
 @Injectable()
 export class SysmoduleService {
   constructor(
     @InjectRepository(SysModule)
     private readonly sysModule: Repository<SysModule>,
+    @InjectRepository(SysModule)
+    private readonly user: Repository<User>,
   ) {
     this.createSysModule();
+  }
+
+  private async hasPermToOperateModule(user, id) {
+    return await hasPermToOperateRow({
+      userId: user.id,
+      rowId: id,
+      entity: this.sysModule,
+      userEntity: this.user,
+    });
   }
 
   private async createSysModule() {
@@ -50,7 +62,6 @@ export class SysmoduleService {
   }
 
   async create(createSysModuleDto: CreateSysModuleDto, user: Partial<User>) {
-    console.log('createSysModuleDto', createSysModuleDto);
     return await this.sysModule.save(
       new SysModule({
         ...createSysModuleDto,
@@ -60,14 +71,35 @@ export class SysmoduleService {
     );
   }
 
-  async update(id: number, createSysModuleDto: CreateSysModuleDto) {
+  async update(
+    id: number,
+    createSysModuleDto: CreateSysModuleDto,
+    user: Partial<User>,
+  ) {
+    const isHasAuth = await this.hasPermToOperateModule(user, id);
+
+    if (ROOT_MODULE_ID === id || AUTH_MODULE_ID === id) {
+      throw new HttpException('系统创建模块不可修改', 400);
+    }
+
+    if (!isHasAuth) {
+      throw new HttpException('非用户创建模块不可修改', 400);
+    }
+
     return await this.sysModule.update(id, createSysModuleDto);
   }
 
-  async remove(id: number) {
+  async remove(id: number, user: Partial<User>) {
+    const isHasAuth = await this.hasPermToOperateModule(user, id);
+
     if (ROOT_MODULE_ID === id || AUTH_MODULE_ID === id) {
       throw new HttpException('系统创建模块不可删除', 400);
     }
+
+    if (!isHasAuth) {
+      throw new HttpException('非用户创建模块不可删除', 400);
+    }
+
     return await this.sysModule.delete(id);
   }
 }

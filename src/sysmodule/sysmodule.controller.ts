@@ -30,12 +30,19 @@ export class SysmoduleController {
     id: string,
     @Body()
     createSysModuleDto: CreateSysModuleDto,
+    @Req()
+    req: Request,
   ) {
-    return this.sysmoduleService.update(+id, createSysModuleDto);
+    return this.sysmoduleService.update(+id, createSysModuleDto, req.user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sysmoduleService.remove(+id);
+  remove(
+    @Param('id')
+    id: string,
+    @Req()
+    req: Request,
+  ) {
+    return this.sysmoduleService.remove(+id, req.user);
   }
 }

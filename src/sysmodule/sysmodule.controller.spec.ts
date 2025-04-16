@@ -3,6 +3,7 @@ import { SysmoduleController } from './sysmodule.controller';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { SysModule } from './entities/sysmodule.entity';
 import { SysmoduleService } from './sysmodule.service';
+import { User } from '../user/entities/user.entity';
 
 describe('SysmoduleController', () => {
   let controller: SysmoduleController;
@@ -14,6 +15,10 @@ describe('SysmoduleController', () => {
         SysmoduleService,
         {
           provide: getRepositoryToken(SysModule),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(User),
           useValue: {},
         },
       ],

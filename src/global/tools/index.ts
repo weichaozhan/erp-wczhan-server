@@ -193,3 +193,26 @@ export const isUserAdmin = async (
   });
   return user?.roles?.some?.((role) => role.id === ROLE_ADMIN_ID);
 };
+
+interface HasPermToOperateRowParams<T> {
+  userId: number;
+  rowId: number;
+  entity?: Repository<T>;
+  userEntity?: Repository<User>;
+}
+export const hasPermToOperateRow = async <T>({
+  userId,
+  rowId,
+  entity,
+  userEntity,
+}: HasPermToOperateRowParams<T>) => {
+  const isAdmin = await isUserAdmin(userId, userEntity);
+  if (isAdmin) {
+    return true;
+  }
+  const row = await entity.findOne({
+    where: { id: rowId, creatorId: userId } as unknown as FindOptionsWhere<T>,
+  });
+
+  return !!row;
+};

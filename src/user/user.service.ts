@@ -137,6 +137,16 @@ export class UserService {
     });
   }
 
+  async getLoginUser(user: Partial<User>) {
+    const { id } = user;
+    return await this.user.findOne({
+      where: {
+        id,
+      },
+      relations: ['roles'],
+    });
+  }
+
   async remove(id: number) {
     return await this.user.delete(id);
   }

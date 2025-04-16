@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
   Put,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '../global/decorator/public.decorator';
 import { CaptchaGuard } from '../global/guard/captcha.guard';
 import { PaginationDto } from '../global/global.dto';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -37,9 +39,15 @@ export class UserController {
     return this.userService.findAll(query);
   }
 
-  @Get(':id')
+  @Get('detail/:id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
+  }
+
+  @Get('info')
+  getLoginUser(@Req() req: Request) {
+    const user = req.user;
+    return this.userService.getLoginUser(user);
   }
 
   @Put(':id')

@@ -10,8 +10,8 @@ import { Repository } from 'typeorm';
 import { Reflector } from '@nestjs/core';
 
 import { User } from '../../user/entities/user.entity';
-import { Role } from '../../role/entities/role.entity';
 import { IS_PUBLIC_KEY, PERMISSION_KEY } from '../decorator/public.decorator';
+import { ROLE_ADMIN_ID } from '../constants/entity';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -43,17 +43,21 @@ export class PermissionGuard implements CanActivate {
       relations: ['roles', 'roles.permissions'],
     });
 
-    const permissionKeys: Role['name'][] = [];
+    if (roles.some((role) => role.id === ROLE_ADMIN_ID)) {
+      return true;
+    }
 
-    roles.forEach((role) => {
+    let permissionHas = false;
+    roles.some((role) => {
       if (role.permissions) {
-        role.permissions.forEach((permission) => {
-          permissionKeys.push(permission.name);
+        return role.permissions.some((permission) => {
+          const isPerm = permission.name === permissionKey;
+          permissionHas = isPerm;
+          return isPerm;
         });
       }
+      return false;
     });
-
-    const permissionHas = permissionKeys.includes(permissionKey);
 
     if (permissionHas) return true;
     throw new HttpException(`没有权限【${request.path}】`, 403);

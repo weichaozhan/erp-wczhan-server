@@ -17,6 +17,7 @@ import { SysModule } from './sysmodule/entities/sysmodule.entity';
 import { Role } from './role/entities/role.entity';
 import { Permission } from './permission/entities/permission.entity';
 import { User } from './user/entities/user.entity';
+import { PermissionGuard } from './global/guard/permission.guard';
 
 @Module({
   imports: [
@@ -58,6 +59,10 @@ import { User } from './user/entities/user.entity';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })

@@ -56,6 +56,6 @@ export class PermissionGuard implements CanActivate {
     const permissionHas = permissionKeys.includes(permissionKey);
 
     if (permissionHas) return true;
-    throw new HttpException('没有权限', 403);
+    throw new HttpException(`没有权限【${request.path}】`, 403);
   }
 }

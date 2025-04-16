@@ -14,11 +14,13 @@ import {
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { PaginationDto } from '../global/global.dto';
+import { SetPermissionKey } from '../global/decorator/public.decorator';
 
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
+  @SetPermissionKey('get_roles')
   @Get()
   findAll(
     @Query()

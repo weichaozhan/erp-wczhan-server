@@ -7,4 +7,4 @@ export const IS_IGNORE_TRANS = 'isIgnoreTrans';
 export const IgnoreTrans = () => SetMetadata(IS_IGNORE_TRANS, true);
 
 export const PERMISSION_KEY = 'permissionKey';
-export const setPermissionKey = (key) => SetMetadata(PERMISSION_KEY, key);
+export const SetPermissionKey = (key) => SetMetadata(PERMISSION_KEY, key);

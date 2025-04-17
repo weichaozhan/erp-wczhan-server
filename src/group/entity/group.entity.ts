@@ -12,17 +12,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import {
-  KEY_REL_PERMISSION,
-  KEY_REL_ROLE,
-  KEY_REL_SYSM,
-  REL_ROLE_PERMISSION,
-  REL_ROLE_SYSM,
+  KEY_REL_GROUP,
+  KEY_REL_USER,
+  REL__GROUP_USER,
 } from '../../global/constants/entity';
-import { SysModule } from '../../sysmodule/entities/sysmodule.entity';
-import { Permission } from '../../permission/entities/permission.entity';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
-export class Role {
+export class Group {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -47,35 +44,21 @@ export class Role {
   @Column({ nullable: true, update: false })
   creatorId: number;
 
-  @ManyToMany(() => SysModule)
+  @ManyToMany(() => User)
   @JoinTable({
-    name: REL_ROLE_SYSM,
+    name: REL__GROUP_USER,
     joinColumn: {
-      name: KEY_REL_ROLE,
+      name: KEY_REL_GROUP,
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: KEY_REL_SYSM,
+      name: KEY_REL_USER,
       referencedColumnName: 'id',
     },
   })
-  sysModules: SysModule[];
+  users: User[];
 
-  @ManyToMany(() => Permission)
-  @JoinTable({
-    name: REL_ROLE_PERMISSION,
-    joinColumn: {
-      name: KEY_REL_ROLE,
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: KEY_REL_PERMISSION,
-      referencedColumnName: 'id',
-    },
-  })
-  permissions: Permission[];
-
-  constructor(init?: Partial<Role>) {
+  constructor(init?: Partial<Group>) {
     Object.assign(this, init ?? {});
   }
 }

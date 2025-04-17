@@ -18,6 +18,9 @@ import { Role } from './role/entities/role.entity';
 import { Permission } from './permission/entities/permission.entity';
 import { User } from './user/entities/user.entity';
 import { PermissionGuard } from './global/guard/permission.guard';
+import { GroupService } from './group/group.service';
+import { GroupController } from './group/group.controller';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -48,8 +51,9 @@ import { PermissionGuard } from './global/guard/permission.guard';
     RoleModule,
     SysmoduleModule,
     PermissionModule,
+    GroupModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, GroupController],
   providers: [
     AppService,
     {
@@ -64,6 +68,7 @@ import { PermissionGuard } from './global/guard/permission.guard';
       provide: APP_GUARD,
       useClass: PermissionGuard,
     },
+    GroupService,
   ],
 })
 export class AppModule {}

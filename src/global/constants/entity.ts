@@ -4,8 +4,10 @@ import { SYS_CREATER } from './index';
 export const REL_ROLE_SYSM = 'role_sysmodule_relation';
 export const REL_ROLE_PERMISSION = 'role_permission_relation';
 export const REL_USER_ROLE = 'user_role_relation';
+export const REL__GROUP_USER = 'group_user_relation';
 
 export const KEY_REL_USER = 'userId';
+export const KEY_REL_GROUP = 'groupId';
 export const KEY_REL_ROLE = 'roleId';
 export const KEY_REL_SYSM = 'sysmoduleId';
 export const KEY_REL_PERMISSION = 'permissionId';

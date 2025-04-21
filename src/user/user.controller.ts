@@ -15,8 +15,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '../global/decorator/public.decorator';
 import { CaptchaGuard } from '../global/guard/captcha.guard';
-import { PaginationDto } from '../global/global.dto';
 import { Request } from 'express';
+import { GetUserDto } from './dto/get-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -35,15 +35,17 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() query: PaginationDto) {
+  findAll(@Query() query: GetUserDto) {
     return this.userService.findAll(query);
   }
 
+  // get user detail by id
   @Get('detail/:id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
 
+  // get logined user's detail, the user is who send the request
   @Get('info')
   getLoginUser(@Req() req: Request) {
     const user = req.user;

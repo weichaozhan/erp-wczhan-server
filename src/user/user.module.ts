@@ -8,9 +8,12 @@ import { User } from './entities/user.entity';
 import { Role } from '../role/entities/role.entity';
 import { Permission } from '../permission/entities/permission.entity';
 import { SysModule } from '../sysmodule/entities/sysmodule.entity';
+import { Group } from '../group/entity/group.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role, SysModule, Permission])],
+  imports: [
+    TypeOrmModule.forFeature([Group, User, Role, SysModule, Permission]),
+  ],
   controllers: [UserController],
   providers: [UserService, JwtStrategy],
 })

@@ -16,6 +16,7 @@ import {
   KEY_REL_USER,
   REL_USER_ROLE,
 } from '../../global/constants/entity';
+import { Group } from '../../group/entity/group.entity';
 
 @Entity()
 export class User {
@@ -72,4 +73,7 @@ export class User {
     },
   })
   roles: Role[];
+
+  @ManyToMany(() => Group, (group) => group.users)
+  groups: Group[];
 }

@@ -5,12 +5,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Like, Repository } from 'typeorm';
 import { isFiledExit } from '../global/tools';
 import { Role } from '../role/entities/role.entity';
 import { ROLE_ADMIN_ID, USER_FIRST_ID } from '../global/constants/entity';
 import { SYS_CREATER } from '../global/constants';
-import { PaginationDto } from '../global/global.dto';
+import { GetUserDto } from './dto/get-user.dto';
+import { Group } from 'src/group/entity/group.entity';
 
 @Injectable()
 export class UserService {
@@ -93,8 +94,8 @@ export class UserService {
     }
   }
 
-  async findAll(query: PaginationDto) {
-    const { page, size, searchKey, searchValue } = query;
+  async findAll(query: GetUserDto) {
+    const { page, size, searchKey, searchValue, groups } = query;
 
     const keyLike =
       searchKey && searchValue
@@ -103,10 +104,21 @@ export class UserService {
           }
         : undefined;
 
+    const groupsFilter: { groups: FindOptionsWhere<Group> } | undefined = groups
+      ? {
+          groups: {
+            id: In(groups.split(',').map((num) => +num)),
+          },
+        }
+      : undefined;
+
     const [users, total] = await this.user.findAndCount({
       skip: (page - 1) * size,
       take: size,
-      where: keyLike,
+      where: {
+        ...keyLike,
+        ...groupsFilter,
+      },
       relations: ['roles'],
     });
 

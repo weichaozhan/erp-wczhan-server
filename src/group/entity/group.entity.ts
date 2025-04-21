@@ -44,7 +44,7 @@ export class Group {
   @Column({ nullable: true, update: false })
   creatorId: number;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, (user) => user.groups)
   @JoinTable({
     name: REL__GROUP_USER,
     joinColumn: {

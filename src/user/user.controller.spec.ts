@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Role } from '../role/entities/role.entity';
+import { Group } from '../group/entity/group.entity';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -19,6 +20,10 @@ describe('UserController', () => {
         },
         {
           provide: getRepositoryToken(Role),
+          useValue: {},
+        },
+        {
+          provide: getRepositoryToken(Group),
           useValue: {},
         },
       ],

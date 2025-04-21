@@ -21,6 +21,7 @@ import { PermissionGuard } from './global/guard/permission.guard';
 import { GroupService } from './group/group.service';
 import { GroupController } from './group/group.controller';
 import { GroupModule } from './group/group.module';
+import { Group } from './group/entity/group.entity';
 
 @Module({
   imports: [
@@ -45,7 +46,7 @@ import { GroupModule } from './group/group.module';
         autoLoadEntities: true,
       }),
     }),
-    TypeOrmModule.forFeature([User, Role, SysModule, Permission]),
+    TypeOrmModule.forFeature([User, Group, Role, SysModule, Permission]),
     AuthModule,
     CaptchaModule,
     RoleModule,

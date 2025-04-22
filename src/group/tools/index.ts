@@ -1,5 +1,8 @@
+import { Repository } from 'typeorm';
 import { USER_FIRST_ID } from '../../global/constants/entity';
 import { User } from '../../user/entities/user.entity';
+import { Group } from '../entity/group.entity';
+import { HttpException } from '@nestjs/common';
 
 export const createGroupUsers = (userIds: number[]): User[] => {
   const users: User[] = [];
@@ -11,4 +14,41 @@ export const createGroupUsers = (userIds: number[]): User[] => {
   });
 
   return users;
+};
+
+export const createCreatorIdFilter = (
+  creatorId?: number,
+): {
+  where?: {
+    creatorId?: number;
+  };
+} => {
+  if (creatorId) {
+    if (creatorId === USER_FIRST_ID) {
+      return {};
+    } else {
+      return {
+        where: {
+          creatorId,
+        },
+      };
+    }
+  }
+
+  return {};
+};
+
+export const judgeHanleAuth = async (
+  group: Repository<Group>,
+  groupId: number,
+  userId: number,
+  errMsg: string,
+) => {
+  const oldGroup = await group.findOne({
+    where: { id: groupId },
+  });
+
+  if (userId !== USER_FIRST_ID && oldGroup.creatorId !== userId) {
+    throw new HttpException(errMsg, 403);
+  }
 };

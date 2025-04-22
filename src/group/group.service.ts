@@ -6,7 +6,11 @@ import { User } from '../user/entities/user.entity';
 import { Group } from './entity/group.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { PaginationDto } from '../global/global.dto';
-import { createGroupUsers } from './tools';
+import {
+  createCreatorIdFilter,
+  createGroupUsers,
+  judgeHanleAuth,
+} from './tools';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
@@ -18,13 +22,15 @@ export class GroupService {
     private readonly group: Repository<Group>,
   ) {}
 
-  async findAll(query: PaginationDto) {
+  async findAll(query: PaginationDto, user: Partial<User>) {
+    const { id: creatorId } = user;
     const { page, size } = query;
 
     const [groups, total] = await this.group.findAndCount({
       skip: (page - 1) * size,
       take: size,
       relations: ['users'],
+      ...createCreatorIdFilter(creatorId),
     });
 
     return {
@@ -35,12 +41,18 @@ export class GroupService {
     };
   }
 
-  async findOne(id: number) {
-    return await this.group.find({
-      where: {
-        id,
+  async findOne(id: number, user: Partial<User>) {
+    const { id: creatorId } = user;
+    const filter = Object.assign(
+      {
+        where: { id },
       },
+      createCreatorIdFilter(creatorId),
+    );
+    return await this.group.findOne({
+      ...filter,
       relations: ['users'],
+      loadRelationIds: true,
     });
   }
 
@@ -60,7 +72,9 @@ export class GroupService {
     return await this.group.save(group);
   }
 
-  async update(id: number, body: UpdateGroupDto) {
+  async update(id: number, body: UpdateGroupDto, user: Partial<User>) {
+    await judgeHanleAuth(this.group, id, user.id, '非用户创建群组不可编辑！');
+
     const { name, userIds } = body;
 
     const group: Partial<Group> = {
@@ -75,7 +89,8 @@ export class GroupService {
     return await this.group.save(group);
   }
 
-  async remove(id: number) {
+  async remove(id: number, user: Partial<User>) {
+    await judgeHanleAuth(this.group, id, user.id, '非用户创建群组不可删除！');
     return await this.group.delete(id);
   }
 }

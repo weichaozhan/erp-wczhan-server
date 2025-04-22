@@ -6,7 +6,8 @@ import { User } from '../user/entities/user.entity';
 import { Group } from './entity/group.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { PaginationDto } from '../global/global.dto';
-import { USER_FIRST_ID } from '../global/constants/entity';
+import { createGroupUsers } from './tools';
+import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
 export class GroupService {
@@ -39,6 +40,7 @@ export class GroupService {
       where: {
         id,
       },
+      relations: ['users'],
     });
   }
 
@@ -52,15 +54,22 @@ export class GroupService {
     };
 
     if (userIds) {
-      const users: User[] = [];
+      group.users = createGroupUsers(userIds);
+    }
 
-      userIds.forEach((id) => {
-        if (id !== USER_FIRST_ID) {
-          users.push({ id } as User);
-        }
-      });
+    return await this.group.save(group);
+  }
 
-      group.users = users;
+  async update(id: number, body: UpdateGroupDto) {
+    const { name, userIds } = body;
+
+    const group: Partial<Group> = {
+      id,
+      name,
+    };
+
+    if (userIds) {
+      group.users = createGroupUsers(userIds);
     }
 
     return await this.group.save(group);

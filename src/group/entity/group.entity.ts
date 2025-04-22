@@ -23,11 +23,8 @@ export class Group {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, update: false })
-  name: string;
-
   @Column()
-  nameToShow: string;
+  name: string;
 
   @Column({ nullable: true })
   description: string;

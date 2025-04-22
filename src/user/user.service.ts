@@ -94,8 +94,17 @@ export class UserService {
     }
   }
 
-  async findAll(query: GetUserDto) {
-    const { page, size, searchKey, searchValue, groups } = query;
+  async findAll(query: GetUserDto, user: Partial<User>) {
+    const loginUser = await this.user.findOne({
+      where: { id: user.id },
+      relations: ['groups'],
+      loadRelationIds: true,
+    });
+    const { groups } = loginUser;
+
+    console.log('loginUser', loginUser);
+
+    const { page, size, searchKey, searchValue } = query;
 
     const keyLike =
       searchKey && searchValue
@@ -107,7 +116,7 @@ export class UserService {
     const groupsFilter: { groups: FindOptionsWhere<Group> } | undefined = groups
       ? {
           groups: {
-            id: In(groups.split(',').map((num) => +num)),
+            id: In(groups),
           },
         }
       : undefined;

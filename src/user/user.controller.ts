@@ -35,8 +35,14 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() query: GetUserDto) {
-    return this.userService.findAll(query);
+  findAll(
+    @Query()
+    query: GetUserDto,
+    @Req()
+    req: Request,
+  ) {
+    console.log(req);
+    return this.userService.findAll(query, req.user);
   }
 
   // get user detail by id

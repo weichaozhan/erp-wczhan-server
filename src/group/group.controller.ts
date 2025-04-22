@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -47,5 +48,10 @@ export class GroupController {
     body: UpdateGroupDto,
   ) {
     return this.groupService.update(+id, body);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.groupService.remove(+id);
   }
 }

@@ -74,4 +74,8 @@ export class GroupService {
 
     return await this.group.save(group);
   }
+
+  async remove(id: number) {
+    return await this.group.delete(id);
+  }
 }

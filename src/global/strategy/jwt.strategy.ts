@@ -18,14 +18,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    const existUser = await this.userRepository.findOne({
+    const existUser: User | null = await this.userRepository.findOne({
       where: {
         id: payload.id,
       },
       relations: ['roles', 'roles.sysModules', 'roles.sysModules.permissions'],
     });
 
-    const { roles } = existUser;
+    const { roles } = existUser ?? {};
     const user: Omit<User, 'roles' | 'hashSync'> & {
       roles: number[];
       sysModules?: number[];

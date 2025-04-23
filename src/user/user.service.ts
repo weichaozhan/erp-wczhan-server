@@ -95,14 +95,12 @@ export class UserService {
   }
 
   async findAll(query: GetUserDto, user: Partial<User>) {
-    const loginUser = await this.user.findOne({
+    const loginUser: User | undefined = await this.user.findOne({
       where: { id: user.id },
-      relations: ['groups'],
+      relations: ['groups', 'roles'],
       loadRelationIds: true,
     });
-    const { groups } = loginUser;
-
-    console.log('loginUser', loginUser);
+    const { groups } = loginUser ?? {};
 
     const { page, size, searchKey, searchValue } = query;
 
@@ -113,21 +111,29 @@ export class UserService {
           }
         : undefined;
 
-    const groupsFilter: { groups: FindOptionsWhere<Group> } | undefined = groups
-      ? {
-          groups: {
-            id: In(groups),
-          },
-        }
-      : undefined;
+    const groupsFilter: { groups: FindOptionsWhere<Group> } | undefined =
+      groups &&
+      !loginUser?.roles?.some?.((role) => role.id === ROLE_ADMIN_ID) &&
+      user.id !== USER_FIRST_ID
+        ? {
+            groups: {
+              id: In(groups),
+            },
+          }
+        : undefined;
 
     const [users, total] = await this.user.findAndCount({
       skip: (page - 1) * size,
       take: size,
-      where: {
-        ...keyLike,
-        ...groupsFilter,
-      },
+      where: [
+        {
+          ...keyLike,
+          ...groupsFilter,
+        },
+        {
+          id: user.id,
+        },
+      ],
       relations: ['roles'],
     });
 

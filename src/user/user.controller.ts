@@ -41,7 +41,6 @@ export class UserController {
     @Req()
     req: Request,
   ) {
-    console.log(req);
     return this.userService.findAll(query, req.user);
   }
 

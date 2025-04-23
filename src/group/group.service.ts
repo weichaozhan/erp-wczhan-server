@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { User } from '../user/entities/user.entity';
 import { Group } from './entity/group.entity';
@@ -24,13 +24,23 @@ export class GroupService {
 
   async findAll(query: PaginationDto, user: Partial<User>) {
     const { id: creatorId } = user;
-    const { page, size } = query;
+    const { page, size, searchKey, searchValue } = query;
+
+    const keyLike =
+      searchKey && searchValue
+        ? {
+            [searchKey]: Like(`%${searchValue}%`),
+          }
+        : undefined;
 
     const [groups, total] = await this.group.findAndCount({
       skip: (page - 1) * size,
       take: size,
       relations: ['users'],
-      ...createCreatorIdFilter(creatorId),
+      where: {
+        ...createCreatorIdFilter(creatorId),
+        ...keyLike,
+      },
     });
 
     return {
@@ -43,12 +53,12 @@ export class GroupService {
 
   async findOne(id: number, user: Partial<User>) {
     const { id: creatorId } = user;
-    const filter = Object.assign(
-      {
-        where: { id },
+    const filter = {
+      where: {
+        id,
+        ...createCreatorIdFilter(creatorId),
       },
-      createCreatorIdFilter(creatorId),
-    );
+    };
     return await this.group.findOne({
       ...filter,
       relations: ['users'],

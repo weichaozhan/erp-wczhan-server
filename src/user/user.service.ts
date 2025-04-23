@@ -111,10 +111,11 @@ export class UserService {
           }
         : undefined;
 
+    const isAdmin =
+      loginUser?.roles?.some?.((role) => role.id === ROLE_ADMIN_ID) ||
+      user.id === USER_FIRST_ID;
     const groupsFilter: { groups: FindOptionsWhere<Group> } | undefined =
-      groups &&
-      !loginUser?.roles?.some?.((role) => role.id === ROLE_ADMIN_ID) &&
-      user.id !== USER_FIRST_ID
+      groups && !isAdmin
         ? {
             groups: {
               id: In(groups),
@@ -130,11 +131,8 @@ export class UserService {
           ...keyLike,
           ...groupsFilter,
         },
-        {
-          id: user.id,
-        },
       ],
-      relations: ['roles'],
+      relations: ['roles', 'groups'],
     });
 
     return {
@@ -150,6 +148,7 @@ export class UserService {
       where: {
         id,
       },
+      relations: ['roles', 'groups'],
     });
   }
 

@@ -16,21 +16,18 @@ export const createGroupUsers = (userIds: number[]): User[] => {
   return users;
 };
 
+interface CreateCreatorIdFilter {
+  creatorId?: number;
+}
 export const createCreatorIdFilter = (
   creatorId?: number,
-): {
-  where?: {
-    creatorId?: number;
-  };
-} => {
+): CreateCreatorIdFilter => {
   if (creatorId) {
     if (creatorId === USER_FIRST_ID) {
       return {};
     } else {
       return {
-        where: {
-          creatorId,
-        },
+        creatorId,
       };
     }
   }

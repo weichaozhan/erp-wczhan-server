@@ -32,6 +32,7 @@ export class RoleController {
     return this.roleService.findAll(query, user);
   }
 
+  @SetPermissionKey('create_roles')
   @Post()
   create(
     @Body()
@@ -43,6 +44,7 @@ export class RoleController {
     return this.roleService.create(body, user);
   }
 
+  @SetPermissionKey('edit_role')
   @Put(':id')
   update(
     @Param('id')
@@ -56,6 +58,7 @@ export class RoleController {
     return this.roleService.update(+id, body, user);
   }
 
+  @SetPermissionKey('del_role')
   @Delete(':id')
   remove(
     @Param('id')
